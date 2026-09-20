@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react"
 import Link from "next/link"
+import { API_URL } from "@/lib/api"
 import { ShieldCheck, ArrowRight, UserCheck, Sparkles, FileText, CheckCircle2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -17,7 +18,6 @@ export function HeroSection() {
       setIsLoggedIn(status)
       if (status) {
         const savedId = localStorage.getItem("current_family_id")
-        const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
 
         const loadFamilyFromMongoDB = async () => {
           let realFamily: any = null

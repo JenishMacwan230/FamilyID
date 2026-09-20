@@ -2,15 +2,15 @@ import mongoose from "mongoose";
 
 const connectDB = async (): Promise<void> => {
   try {
-    let uri = process.env.MONGO_URI;
+    let uri = process.env.MONGODB_URI || process.env.MONGO_URI;
     if (!uri) {
-      console.error("MONGO_URI is not defined in environment variables.");
+      console.error("CRITICAL ERROR: Neither MONGODB_URI nor MONGO_URI is defined in environment variables.");
       return;
     }
 
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
-    if (!uri.includes("tlsAllowInvalidCertificates")) {
+    if (!uri.includes("tlsAllowInvalidCertificates") && !uri.includes("localhost") && !uri.includes("127.0.0.1")) {
       uri += (uri.includes("?") ? "&" : "?") + "tlsAllowInvalidCertificates=true&ssl=true";
     }
 

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react"
 import Link from "next/link"
+import { API_URL } from "@/lib/api"
 import { Navbar } from "@/components/Navbar"
 import { Footer } from "@/components/Footer"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
@@ -126,7 +127,6 @@ export function SchemesPage() {
       const status = localStorage.getItem("is_logged_in") === "true"
       setIsLoggedIn(status)
       const savedId = localStorage.getItem("current_family_id")
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
 
       const loadFamilyFromMongoDB = async () => {
         let realFamily: any = null
@@ -405,7 +405,6 @@ export function SchemesPage() {
     const memberOccupation = selectedMember?.occupation || (selectedMember?.isGovtOfficial ? "Government Employee" : selectedMember?.isAbroad ? "NRI / Living Abroad" : "Private Sector Job")
 
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
       const res = await fetch(`${API_URL}/api/schemes/check-eligibility`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -451,7 +450,6 @@ export function SchemesPage() {
     }))
 
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
       const res = await fetch(`${API_URL}/api/schemes/apply`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

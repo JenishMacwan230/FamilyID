@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react"
 import Link from "next/link"
+import { API_URL } from "@/lib/api"
 import { Navbar } from "@/components/Navbar"
 import { Footer } from "@/components/Footer"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
@@ -73,7 +74,6 @@ export function AdminDashboardPage() {
 
   const fetchAdminApplications = async () => {
     setLoading(true)
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
     try {
       const res = await fetch(`${API_URL}/api/schemes/admin/all-applications`).catch(() => null)
       if (res && res.ok) {
@@ -95,7 +95,6 @@ export function AdminDashboardPage() {
     setActionSuccessMsg("")
     setActionErrorMsg("")
 
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
     try {
       const res = await fetch(`${API_URL}/api/schemes/admin/application/${applicationNo}/status`, {
         method: "PUT",
@@ -130,7 +129,6 @@ export function AdminDashboardPage() {
     setActionSuccessMsg("")
     setActionErrorMsg("")
 
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
     try {
       const res = await fetch(`${API_URL}/api/schemes/admin/application/${applicationNo}`, {
         method: "DELETE",

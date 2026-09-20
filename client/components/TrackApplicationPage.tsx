@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react"
 import Link from "next/link"
+import { API_URL } from "@/lib/api"
 import { Navbar } from "@/components/Navbar"
 import { Footer } from "@/components/Footer"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
@@ -38,7 +39,6 @@ export function TrackApplicationPage() {
 
   const fetchFamilyRecord = async (searchId: string) => {
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
       const res = await fetch(`${API_URL}/api/families/${searchId}`).catch(() => null)
       if (res && res.ok) {
         const data = await res.json()
@@ -54,7 +54,6 @@ export function TrackApplicationPage() {
 
   const fetchFamilyApplications = async (familyId: string) => {
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
       const res = await fetch(`${API_URL}/api/schemes/family/${familyId}`).catch(() => null)
       if (res && res.ok) {
         const apps = await res.json()
@@ -77,7 +76,6 @@ export function TrackApplicationPage() {
   const handleRescheduleSlot = async (appNo: string) => {
     if (!newSlotSelected) return
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
       const res = await fetch(`${API_URL}/api/schemes/application/${appNo}/slot`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },

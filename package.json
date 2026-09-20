@@ -1,6 +1,7 @@
 {
   "name": "family-id",
   "private": true,
+  "packageManager": "pnpm@9.15.9",
   "scripts": {
     "dev": "concurrently \"pnpm --dir client dev\" \"pnpm --dir server dev\""
   },

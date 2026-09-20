@@ -3,6 +3,7 @@
 import React, { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { API_URL } from "@/lib/api"
 import { Navbar } from "@/components/Navbar"
 import { Footer } from "@/components/Footer"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
@@ -101,7 +102,6 @@ export function CreateFamilyPage() {
 
     // Backend API check
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
       const res = await fetch(`${API_URL}/api/families/check-mobile`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -217,7 +217,6 @@ export function CreateFamilyPage() {
     }
 
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
       const res = await fetch(`${API_URL}/api/families`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

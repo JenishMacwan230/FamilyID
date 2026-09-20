@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react"
 import Link from "next/link"
+import { API_URL } from "@/lib/api"
 import { Navbar } from "@/components/Navbar"
 import { Footer } from "@/components/Footer"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
@@ -93,7 +94,6 @@ export function DashboardPage() {
   const fetchOriginalFamilyData = async (familyIdQuery: string) => {
     setLoading(true)
     setErrorMsg("")
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
     
     let realFamily: any = null
 
@@ -206,7 +206,6 @@ export function DashboardPage() {
 
     setSubmittingAdd(true)
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
       const res = await fetch(`${API_URL}/api/families/${familyData.familyId}/members`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -270,7 +269,6 @@ export function DashboardPage() {
 
     setSubmittingEdit(true)
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
       const memberIdentifier = editForm._id || editingMember.aadhaar
       const res = await fetch(`${API_URL}/api/families/${familyData.familyId}/members/${memberIdentifier}`, {
         method: "PUT",
@@ -316,7 +314,6 @@ export function DashboardPage() {
     setSubmittingDelete(true)
 
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
       const memberIdentifier = deletingMember._id || deletingMember.aadhaar
       const res = await fetch(`${API_URL}/api/families/${familyData.familyId}/members/${memberIdentifier}`, {
         method: "DELETE",
