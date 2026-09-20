@@ -9,8 +9,9 @@ node_modules/
 .env.development.local
 .env.test.local
 .env.production.local
-.env.*
+#.env.*
 !.env.example
+!.env.production
 
 # Next.js & Build output
 .next/
