@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-   "scripts": {
+  "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "tsc",
+    "build": "pnpm install --production=false && tsc",
     "start": "node dist/server.js"
   },
   "keywords": [],
