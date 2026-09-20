@@ -1,0 +1,19 @@
+1. Introduction of Family Id in gujarat to improve beneficiary management for 
+various government scheme 
+
+
+Use case : 
+
+(By government but family has to provide some proof) 
+
+1. A family can create family Id + verification (Head of the family + moible verification)
+2. A new family can be created from old family
+3. A family Id can be deleted
+4. Update or family details (address , members (crud) , family income, cast,religion,
+                            is any member is government official,any member is in other country)
+
+5. family can see in which schemes they are eligible or any specific family member is eligible or not;
+6. Check no duplication in family members(1 person can not be in more then 1 family)
+7. Can not received 1 scheme benefit more then 1 (If it is applicable)
+8. government can not seen your family data until and unless you apply for some scheme. or for verification.
+9. 
