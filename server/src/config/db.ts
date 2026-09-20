@@ -12,6 +12,8 @@ const connectDB = async (): Promise<void> => {
 
     await mongoose.connect(uri, {
       serverSelectionTimeoutMS: 10000,
+      connectTimeoutMS: 10000,
+      family: 4, // Force IPv4 DNS resolution for Cloud hosts like Render
     });
 
     console.log("MongoDB connected successfully!");
