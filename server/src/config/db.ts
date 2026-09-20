@@ -10,13 +10,7 @@ const connectDB = async (): Promise<void> => {
 
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
-    if (!uri.includes("tlsAllowInvalidCertificates") && !uri.includes("localhost") && !uri.includes("127.0.0.1")) {
-      uri += (uri.includes("?") ? "&" : "?") + "tlsAllowInvalidCertificates=true&ssl=true";
-    }
-
     await mongoose.connect(uri, {
-      tlsAllowInvalidCertificates: true,
-      ssl: true,
       serverSelectionTimeoutMS: 10000,
     });
 

@@ -1,0 +1,141 @@
+@startuml FamilyID_System_Architecture
+
+' ========================================================
+' Family ID Portal - Government of Gujarat (UML Architecture)
+' ========================================================
+
+skinparam componentStyle uml2
+skinparam backgroundColor #FFFFFF
+skinparam packageBackgroundColor #F8FAFC
+skinparam nodeBackgroundColor #EFF6FF
+skinparam databaseBackgroundColor #F0FDF4
+skinparam actorStyle awesome
+
+title Family ID Portal — System Architecture Diagram
+
+' --------------------------------------------------------
+' Actors
+' --------------------------------------------------------
+actor "Citizens of Gujarat" as Citizen
+actor "Government Official (Familyadmin)" as Official
+
+' --------------------------------------------------------
+' Client Layer (Vercel)
+' --------------------------------------------------------
+package "Client Presentation Layer (Vercel Platform)" {
+  [Next.js 16 App Router (React 19, Tailwind CSS)] as NextJS
+  [Citizen Dashboard View (/dashboard)] as DashboardView
+  [Scheme Eligibility Engine UI (/schemes)] as SchemeView
+  [Live Status Tracker (/track)] as TrackView
+  [Officer Inspection Console (/admin)] as AdminView
+  [Centralized API Client (client/lib/api.ts)] as APIClient
+
+  NextJS --> DashboardView
+  NextJS --> SchemeView
+  NextJS --> TrackView
+  NextJS --> AdminView
+
+  DashboardView --> APIClient
+  SchemeView --> APIClient
+  TrackView --> APIClient
+  AdminView --> APIClient
+}
+
+' --------------------------------------------------------
+' Backend Layer (Render)
+' --------------------------------------------------------
+package "Application Backend Layer (Render Platform)" {
+  [Express.js Server (Node.js & TypeScript)] as ExpressServer
+  [CORS Policy & BodyParser Middleware] as Middleware
+  [Family Controller (/api/families)] as FamilyCtrl
+  [Scheme Controller (/api/schemes)] as SchemeCtrl
+  [Rule-Based Eligibility Engine] as EligibilityEngine
+
+  ExpressServer --> Middleware
+  Middleware --> FamilyCtrl
+  Middleware --> SchemeCtrl
+  SchemeCtrl --> EligibilityEngine
+}
+
+' --------------------------------------------------------
+' Database Layer (MongoDB Atlas)
+' --------------------------------------------------------
+package "Data Storage Layer (MongoDB Atlas Cloud)" {
+  database "MongoDB Atlas Database" as MongoDB {
+    folder "families Collection (Family Cards & Member Profiles)" as FamColl
+    folder "schemeapplications Collection (Submitted Applications & Uploaded Docs)" as SchColl
+  }
+}
+
+' --------------------------------------------------------
+' Connections & Interfaces
+' --------------------------------------------------------
+Citizen --> NextJS : Creates Family Card, Applies for Schemes, Uploads Verification Docs
+Official --> NextJS : Accesses /admin Console, Previews Uploaded Docs, Gives Verdicts
+
+APIClient ==> ExpressServer : HTTPS / REST API (JSON Payloads)
+
+FamilyCtrl ==> FamColl : Mongoose ORM Queries & Mutations
+SchemeCtrl ==> SchColl : Mongoose ORM Queries & Mutations
+
+@enduml
+
+@startuml FamilyID_Entity_Class_Diagram
+
+title Family ID Portal — Entity Class Diagram
+
+class Family {
+  +ObjectId _id
+  +String familyId
+  +String headMobile
+  +String address
+  +String district
+  +String caste
+  +String religion
+  +String status
+  +Date createdAt
+  +Date updatedAt
+}
+
+class MemberSubdocument {
+  +String name
+  +String aadhaar
+  +String dob
+  +String relation
+  +Number income
+  +String caste
+  +String religion
+  +String occupation
+  +Boolean isGovtOfficial
+  +Boolean isAbroad
+}
+
+class SchemeApplication {
+  +ObjectId _id
+  +String applicationNo
+  +String familyId
+  +String applicantName
+  +String applicantAadhaar
+  +String schemeId
+  +String schemeTitle
+  +String category
+  +Number income
+  +String caste
+  +String documentUploaded
+  +String casteCertificateUploaded
+  +String verificationSlot
+  +String status
+  +Date createdAt
+}
+
+class UploadedDocumentMetadata {
+  +String title
+  +String filename
+  +String category
+}
+
+Family "1" *-- "1..*" MemberSubdocument : contains
+SchemeApplication "1" *-- "0..*" UploadedDocumentMetadata : includes
+Family "1" -- "0..*" SchemeApplication : references by familyId
+
+@enduml
