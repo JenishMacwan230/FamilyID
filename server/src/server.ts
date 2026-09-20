@@ -19,7 +19,7 @@ const allowedOrigins = [
 
 app.use(
   cors({
-    origin: (origin, callback) => {
+    origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
       if (
         !origin ||
         allowedOrigins.includes(origin) ||
@@ -39,7 +39,7 @@ app.use(express.json());
 app.use("/api/families", familyRoutes);
 app.use("/api/schemes", schemeRoutes);
 
-app.get("/", (req, res) => {
+app.get("/", (req: express.Request, res: express.Response) => {
   res.json({
     status: "success",
     message: "Family ID API is running",

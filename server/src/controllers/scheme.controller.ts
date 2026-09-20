@@ -234,7 +234,7 @@ export const getAllApplicationsForAdmin = async (req: Request, res: Response): P
     const families = await Family.find().sort({ createdAt: -1 });
 
     const enrichedSchemeApps = await Promise.all(
-      schemeApps.map(async (app) => {
+      schemeApps.map(async (app: any) => {
         const family = await Family.findOne({ familyId: app.familyId });
         return {
           _id: app._id,
@@ -269,8 +269,8 @@ export const getAllApplicationsForAdmin = async (req: Request, res: Response): P
       })
     );
 
-    const familyApps = families.map((fam) => {
-      const head = fam.members.find((m) => m.relation === "Head of Family") || fam.members[0];
+    const familyApps = families.map((fam: any) => {
+      const head = fam.members.find((m: any) => m.relation === "Head of Family") || fam.members[0];
       const famStatusMapped =
         fam.status === "Pending Verification" ? "Submitted" : fam.status === "Verified" ? "Approved" : fam.status;
 
@@ -284,7 +284,7 @@ export const getAllApplicationsForAdmin = async (req: Request, res: Response): P
         schemeId: "family-id-registration",
         schemeTitle: "New Family ID Card Registration & Verification",
         category: fam.caste || "General",
-        income: fam.members.reduce((sum, m) => sum + (Number(m.income) || 0), 0),
+        income: fam.members.reduce((sum: number, m: any) => sum + (Number(m.income) || 0), 0),
         caste: fam.caste,
         documentUploaded: "Ration_Card_Family_Proof.pdf",
         casteCertificateUploaded: fam.caste !== "General" ? `${fam.caste}_Certificate.pdf` : "",

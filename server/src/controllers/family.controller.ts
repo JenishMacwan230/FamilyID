@@ -82,7 +82,7 @@ export const createFamily = async (req: Request, res: Response): Promise<void> =
     const existingMemberFamily = await Family.findOne({ "members.aadhaar": { $in: aadhaars } });
     if (existingMemberFamily) {
       // Find which member caused the conflict
-      const conflictingMember = existingMemberFamily.members.find((m) => aadhaars.includes(m.aadhaar));
+      const conflictingMember = existingMemberFamily.members.find((m: any) => aadhaars.includes(m.aadhaar));
       res.status(400).json({
         message: `Member ${conflictingMember?.name || ""} (Aadhaar: ${conflictingMember?.aadhaar || ""}) is already registered in Family ID: ${existingMemberFamily.familyId}.`,
       });
@@ -235,7 +235,7 @@ export const addFamilyMember = async (req: Request, res: Response): Promise<void
     // Check if Aadhaar exists anywhere in MongoDB across any family
     const existingAadhaarFamily = await Family.findOne({ "members.aadhaar": cleanAadhaar });
     if (existingAadhaarFamily) {
-      const confMember = existingAadhaarFamily.members.find((m) => m.aadhaar === cleanAadhaar);
+      const confMember = existingAadhaarFamily.members.find((m: any) => m.aadhaar === cleanAadhaar);
       res.status(400).json({
         message: `Aadhaar number ${cleanAadhaar} (${confMember?.name || "Member"}) is already registered under Family ID: ${existingAadhaarFamily.familyId}.`,
       });
