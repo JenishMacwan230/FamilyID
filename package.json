@@ -1,0 +1,10 @@
+{
+  "name": "family-id",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"pnpm --dir client dev\" \"pnpm --dir server dev\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  }
+}
