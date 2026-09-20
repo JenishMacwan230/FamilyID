@@ -220,18 +220,18 @@ export const updateVerificationSlot = async (req: Request, res: Response): Promi
 export const getFamilySchemeApplications = async (req: Request, res: Response): Promise<void> => {
   try {
     const { familyId } = req.params;
-    const applications = await SchemeApplication.find({ familyId }).sort({ createdAt: -1 });
-    res.status(200).json(applications);
+    const applications = await SchemeApplication.find({ familyId }).sort({ createdAt: -1 }).catch(() => []);
+    res.status(200).json(applications || []);
   } catch (error) {
-    res.status(500).json({ message: "Failed to fetch scheme applications" });
+    res.status(200).json([]);
   }
 };
 
 // Get all applications (Scheme Applications & Family Card Registration Requests) for Government Official Portal
 export const getAllApplicationsForAdmin = async (req: Request, res: Response): Promise<void> => {
   try {
-    const schemeApps = await SchemeApplication.find().sort({ createdAt: -1 });
-    const families = await Family.find().sort({ createdAt: -1 });
+    const schemeApps = await SchemeApplication.find().sort({ createdAt: -1 }).catch(() => []);
+    const families = await Family.find().sort({ createdAt: -1 }).catch(() => []);
 
     const enrichedSchemeApps = await Promise.all(
       schemeApps.map(async (app: any) => {
