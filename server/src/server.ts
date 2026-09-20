@@ -51,6 +51,24 @@ app.get("/", (req: express.Request, res: express.Response) => {
   });
 });
 
+// Health check endpoint to diagnose deployment issues
+app.get("/health", async (req: express.Request, res: express.Response) => {
+  const mongoose = await import("mongoose");
+  const dbState = mongoose.default.connection.readyState;
+  const stateMap: Record<number, string> = {
+    0: "disconnected",
+    1: "connected",
+    2: "connecting",
+    3: "disconnecting",
+  };
+  res.json({
+    status: "ok",
+    mongo_uri_set: Boolean(process.env.MONGO_URI || process.env.MONGODB_URI),
+    mongo_connection: stateMap[dbState] || "unknown",
+    timestamp: new Date().toISOString(),
+  });
+});
+
 const PORT = process.env.PORT || 5000;
 
 const startServer = async () => {
