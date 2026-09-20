@@ -1,14 +1,16 @@
 import mongoose from "mongoose";
 
+const DEFAULT_MONGO_URI =
+  "mongodb+srv://jenishmacwan230_db_user:5wiJMD07fkN9HM9P@familyid-db.xtpksng.mongodb.net/?appName=FamilyID-DB";
+
 const connectDB = async (): Promise<void> => {
   try {
-    let uri = process.env.MONGODB_URI || process.env.MONGO_URI;
-    if (!uri) {
-      console.error("CRITICAL ERROR: Neither MONGODB_URI nor MONGO_URI is defined in environment variables.");
-      return;
-    }
+    const uri = process.env.MONGODB_URI || process.env.MONGO_URI || DEFAULT_MONGO_URI;
 
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
+    // Fast error diagnosis if disconnected
+    mongoose.set("bufferCommands", false);
 
     await mongoose.connect(uri, {
       serverSelectionTimeoutMS: 10000,
